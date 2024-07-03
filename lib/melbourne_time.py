@@ -28,7 +28,21 @@ def get_melbourne_date():
             data = response.json()
             melbourne_date = data.get("dateTime")
             if melbourne_date:
-                print(melbourne_date)
+                # Extract the date part (yyyy-mm-dd) from the datetime string
+                date_part = melbourne_date.split("T")[0]
+                year, month, day = map(int, date_part.split("-"))
+                return year, month, day
     except Exception as e:
-        print('Error', e)
-        return None
+        print('Error:', e)
+    return None, None, None
+
+# Fetch the date and store in variables
+year, month, day = get_melbourne_date()
+
+# Print the variables to verify
+if year is not None:
+    print("Year:", year)
+    print("Month:", month)
+    print("Day:", day)
+else:
+    print("Failed to fetch the date.")

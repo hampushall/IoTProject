@@ -20,9 +20,7 @@ AIO_HUMIDITY_FEED = "hampushall/feeds/humidity"
 AIO_TEMPERATURE_FEED = "hampushall/feeds/temperature"
 
 def count_days():
-    rtc = machine.RTC()
-    rtc.datetime((2024, 6, 28, 0, 13, 38, 0, 0))  # (year, month, day, weekday, hour, minute, second, millisecond)
-    current_time = rtc.datetime()
+    current_time = get_melbourne_date()
     current_year = current_time[0]
     current_month = current_time[1]
     current_day = current_time[2]
@@ -35,7 +33,6 @@ def count_days():
     days_target = utime.mktime((target_year, target_month, target_day, 0, 0, 0, 0, 0)) // (24 * 3600)
 
     days_until_target = days_target - days_current
-    print(current_time)
     return days_until_target
 
 client = MQTTClient(AIO_CLIENT_ID, AIO_SERVER, AIO_PORT, AIO_USER, AIO_KEY)
@@ -58,8 +55,8 @@ try:
     while True:
         client.check_msg()
         melbourne_time = get_melbourne_time()
-        current_date = utime.localtime()[2]
-        print(get_melbourne_date())
+        melbourne_date = get_melbourne_date()
+        current_date = melbourne_date[2]
 
         if last_fetch_date != current_date:
             sunrise, sunset = get_sunrise_sunset()
@@ -69,9 +66,6 @@ try:
             days_until_home = count_days()
             client.publish(topic=AIO_CURRENT_TIME_FEED, msg=str(melbourne_time))
             client.publish(topic=AIO_DAYSUNTIL_FEED, msg=str(days_until_home))
-            print('Sunrise is: ', sunrise)
-            print('Sunset is: ', sunset)
-            print('Current time: ', melbourne_time)
             
             if sunrise <= melbourne_time <= sunset:
                 ledGreen.on()
@@ -85,6 +79,6 @@ try:
             temperature, humidity = get_temperature_and_humidity()
             client.publish(topic=AIO_HUMIDITY_FEED, msg=str(humidity))
             client.publish(topic=AIO_TEMPERATURE_FEED, msg=str(temperature))
-        sleep(360)
+        sleep(90)
 finally:
     client.disconnect()
