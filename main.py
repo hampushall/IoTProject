@@ -9,15 +9,15 @@ from mqtt import MQTTClient
 import ubinascii
 
 AIO_SERVER = "io.adafruit.com"
-AIO_PORT = 1883
-AIO_USER = "hampushall"
-AIO_KEY = "aio_gMNV42JVsjl1jaRqQlnR4Y26qVjd"
+AIO_PORT = PORT
+AIO_USER = "USERNAME"
+AIO_KEY = "SECRETKEY"
 AIO_CLIENT_ID = ubinascii.hexlify(machine.unique_id())
-AIO_DAYTIME_LED_FEED = "hampushall/feeds/daytimeled"
-AIO_CURRENT_TIME_FEED = "hampushall/feeds/current-time"
-AIO_DAYSUNTIL_FEED = "hampushall/feeds/daysuntil"
-AIO_HUMIDITY_FEED = "hampushall/feeds/humidity"
-AIO_TEMPERATURE_FEED = "hampushall/feeds/temperature"
+AIO_DAYTIME_LED_FEED = "username/feeds/daytimeled"
+AIO_CURRENT_TIME_FEED = "username/feeds/current-time"
+AIO_DAYSUNTIL_FEED = "username/feeds/daysuntil"
+AIO_HUMIDITY_FEED = "username/feeds/humidity"
+AIO_TEMPERATURE_FEED = "username/feeds/temperature"
 
 def count_days():
     current_time = get_melbourne_date()
